@@ -25,3 +25,15 @@
     /* 设置每个段落的外边距，底部外边距为5px */
     margin-bottom: 5px;
 }
+.containerComment {  
+    display: flex;  
+    align-items: center;  
+  }  
+.containerComment .commentInput{
+    width: 500px;  
+    padding: 10px;  
+    border: 1px solid #ccc;  
+    border-radius: 4px;  
+    font-size: 16px;  
+    bottom: 50px;  
+}

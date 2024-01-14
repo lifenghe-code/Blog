@@ -58,13 +58,22 @@
 
         </h3>
         <div class="data"  id = date>
-
         </div>
+
         <div class="content" id = content style=width:19cm;word-break:break-all;>
-
         </div>
 
+        <div class="comment" id = comment>
+        </div>
 
+        <div class="containerComment">
+        <input type="text" class="commentInput" id="commentInput">
+        
+        <div class="row">
+            <input type="submit" id="submit" value="提交" onclick="postComment()">
+        </div>
+
+        </div>
     </div>
 </div>
 <script>
@@ -76,9 +85,12 @@
         var box0 = document.getElementById('title');
         var box1 = document.getElementById('date');
         var box2 = document.getElementById('content');
+        var box3 = document.getElementById('comment');
         box0.innerHTML = result["article"][0];
         box1.innerHTML = result["article"][1];
         box2.innerHTML = result["article"][2];
+        box3.innerHTML = result["article"][3];
+
     }
     )
 </script>
@@ -92,6 +104,28 @@
 <script>
     function homePage(){
         window.location.href="blog_list.html#id="+userId;
+    }
+</script>
+
+<script>
+    function postComment(){
+        let data = {}
+        data["userId"] = userId
+        data["articleId"] = articleId;
+        data["comment"] = document.getElementById('commentInput').value;
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://localhost:18081/article/comment')
+        xhr.send(data)
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var returnMesg = JSON.parse(xhr.responseText);
+            console.log(returnMesg);
+            if (returnMesg.flag === true){
+                alert("评论成功");
+            }
+
+        }
+    }
     }
 </script>
 
