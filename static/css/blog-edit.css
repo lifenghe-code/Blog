@@ -1,0 +1,88 @@
+/* 博客编辑页的样式 */
+
+/* 设置版心 */
+.blog-edit-container{
+    width:1000px;
+    height:calc(100% - 50px);
+    margin:auto;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+}
+/* 注意，使用后代选择器，防止和导航栏中的.title冲突 */
+.blog-edit-container .title{
+    height:50px;
+    /* 设置弹性布局 */
+    display: flex;
+    /* 水平方向  紧靠左右边界有间隔的均匀排布 */
+    justify-content: space-between;
+    /* 垂直方向居中显示 */
+    align-items: center;
+}
+
+/* 针对每一行的设置 */
+.row{
+    /* 设置每行的高度 */
+    height:50px;
+    /* 设置每行的宽度 */
+    width:100%;
+    /* 设置弹性布局 */
+    display: flex;
+    /* 水平方向元素之间的排列，与左右边界有间隔均匀排列 */
+    justify-content: space-around;
+    /* 垂直方向居中 */
+
+}
+
+
+/* 标题的输入框 */
+#title-input{
+    height:40px;
+    width:200px;
+
+    /* 添加圆角矩形 */
+    border-radius: 10px;
+    /* 去掉浏览器默认的边框 */
+    /* border:none;
+    /* 设置输入框中输入文字的大小 */
+    font-size: 20px;
+    /* 设置输入框左边和输入文字之间的距离 */
+    text-indent:10px;
+}
+
+/* 提交按钮 */
+#submit{
+    height:40px;
+    /* 提交按钮和标题的输入框宽度相加，是996px,中间留4px的缝隙 */
+    width: 100px;
+
+    /* 添加圆角矩形 */
+    border-radius: 10px;
+    /* 去掉浏览器默认的边框 */
+    border:none;
+    /* 设置提交按钮的字体的大小 */
+    font-size: 17px;
+    /* 设置提交按钮的文字颜色 */
+    color:white;
+    /* 设置提交按钮的颜色 */
+    background-color: orange;
+    /* 加上背景切换的过渡效果，all表示针对所有的变化都进行过度，2s意思是过度时间是2s */
+    transition:all 0.3s;
+}
+/* 设置鼠标悬停在提交按钮上的背景颜色 */
+#submit:hover{
+    background-color: gray;
+}
+
+#inputbox{
+    height:400px;
+    width:500px;
+    /* 添加圆角矩形 */
+    border-radius: 10px;
+    /* 去掉浏览器默认的边框 */
+    /* border:none;
+    /* 设置输入框中输入文字的大小 */
+    font-size: 20px;
+    /* 设置输入框左边和输入文字之间的距离 */
+    text-indent:10px;
+
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客列表页</title>
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/blog-list.css">
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+</script>
+<!-- 导航栏 nav 是导航整个次的缩写 -->
+<div class="nav">
+    <!-- logo -->
+    <img src="../resources/image/spiderMan.jpg" alt="">
+    <div class="title">我的博客系统</div>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar">
+        <input type="submit" value="上传头像">
+    </form>
+    <!-- 只是一个空白，用来把后面的链接挤过去 -->
+    <!-- 这是一个简单粗暴的写法 -->
+    <div class="spancer"></div>
+    <button onclick="blogPublic()">博客大厅</button>
+    <button onclick="homePage()">主页</button>
+    <button onclick="edit()">写博客</button>
+    <button onclick="chatRoom()">聊天室</button>
+    <!-- 这里的地址回头在说 -->
+    <a href="login.html">注销</a>
+</div>
+
+<!-- 页面的主题部分 -->
+<div class="container">
+    <!-- 左侧信息 -->
+    <div class="container-left">
+        <!-- 这个div表示整个用户信息的区域 -->
+        <div class="card">
+            <!-- 用户的头像 -->
+            <img src="../image/head_portrait.jpg" alt="">
+            <!-- 用户名 -->
+            <h3 id = "name"></h3>
+
+            <!-- GitHub地址 -->
+            <!-- <a href="https://github.com">github 地址</a>-->
+            <!-- 统计信息 -->
+            <div class="counter">
+                <span>文章</span>
+                <!-- <span>分类</span> -->
+            </div>
+            <div class="counter" id = "number">
+                <span>2</span>
+                <!-- <span>1</span>-->
+            </div>
+        </div>
+
+    </div>
+    <!-- 右侧信息 -->
+    <div class="container-right" id = "article">
+        <!-- 这个div表示一个博客 -->
+
+
+            <!-- html中不能直接写大于号、小于号可能会被当成标签的一部分，我们使用转移字符 用&gt;表示大于号，&lt;表示小于号-->
+
+    </div>
+        <div class="row">
+            <input type="button" id="more" value="查看更多博客" style="visibility: hidden" onclick="more()">
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function()  // 网页打开时，直接调用的函数
+    {
+        //解析url中的内容，提取用户账号
+        var loc = location.href;
+        var n1 = loc.length;
+        var n2 = loc.indexOf('=');
+        userId = decodeURI(loc.substr(n2 + 1, n1 - n2));
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://localhost:18081/user/list')
+        xhr.send(userId)
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                returnMesg = JSON.parse(xhr.responseText);
+                console.log(returnMesg);
+                if (returnMesg.flag === true) {
+                    var num = returnMesg.data.length;
+                    document.getElementById("name").innerHTML = returnMesg.data[0]["userName"];
+                    document.getElementById("number").innerHTML = num-1;  //减去第一条用户信息数据
+
+                    if(num>4){
+                        document.getElementById("more").style.visibility = "visible"
+                    }
+                    let ul = document.getElementById("article");
+                    let div0 = document.createElement("div");
+                    div0.className = "blog";
+                    for(var i = 1; i< (num<4?num:4);i++){
+                        let div1 = document.createElement("div");
+                        div1.className = "title";
+                        div1.innerHTML = returnMesg.data[i]["Title"];
+                        div1.id = "title"+i;
+
+                        let div2 = document.createElement("div");
+                        div2.className = "date";
+                        div2.innerHTML = returnMesg.data[i]["Date"];
+                        div2.id = "date"+i;
+
+                        let div3 = document.createElement("div");
+                        div3.className = "desc";
+                        div3.innerHTML = returnMesg.data[i]["Content"];
+                        div3.style.width = "15cm";
+                        div3.style.wordBreak = "break-all";
+                        div3.style.overflow = "hidden";
+                        div3.style.whiteSpace = "nowrap";
+                        div3.style.textOverflow = "ellipsis";
+                        div3.id = "desc"+i;
+
+                        let div4 = document.createElement("button");
+                        div4.className = "button";
+                        div4.innerHTML = "查看全文";
+                        div4.id = "detail"+i;
+                        div4.onclick=function(){
+                            getClickID(this);
+                        }
+                        let div5 = document.createElement("button");
+                        div5.className = "button";
+                        div5.innerHTML = "删除";
+                        div5.id = "delete"+i;
+                        div5.onclick=function(){
+                            deleteArticle(this);
+                        }
+                        div0.appendChild(div1);
+                        div0.appendChild(div2);
+                        div0.appendChild(div3);
+                        div0.appendChild(div4);
+                        div0.appendChild(div5);
+                        ul.appendChild(div0)
+                    }
+                }
+                else {
+                    alert("出错啦");
+                }
+
+            }
+        }
+})
+</script>
+
+<script>
+    function more(){
+        window.location.href="blog_all.html#id="+userId;
+    }
+
+</script>
+
+<script>
+    function getClickID(obj){
+        let detailId = obj.id;
+        let num = detailId.substring(6,);
+        let titleId = "title"+num;
+        let dateId = "date"+num;
+        let contentId = "desc"+num;
+        let title = document.getElementById(titleId).innerText;
+        let date = document.getElementById(dateId).innerText;
+        let content = document.getElementById(contentId).innerText;
+        let s = title + "&"+date + "&"+content;
+        window.location.href="blog_detail.html?"+"id="+userId +"%"+'txt=' + encodeURI(s);
+    }
+
+</script>
+
+<script>
+
+    function deleteArticle(obj){
+        let detailId = obj.id;
+        let num = detailId.substring(6,);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:18081/article/delete",
+                data: {id:returnMesg.data[num]["Id"]},
+                success : function(res1) {//请求成功
+                    // console.log(res1.data)
+                    alert(res1.message);
+                    location.reload(); //刷新页面
+                },
+                error : function(e){//请求失败，包含具体的错误信息
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            })
+        }
+
+
+</script>
+
+
+<script>
+    function blogPublic(){
+        window.location.href="blog_public.html#id="+userId;
+    }
+
+</script>
+
+<script>
+    function homePage(){
+        window.location.href="blog_list.html#id="+userId;
+    }
+
+</script>
+<script>
+    function edit(){
+        window.location.href="blog_edit.html#id="+userId;
+    }
+
+</script>
+<script>
+    function chatRoom(){
+        window.location.href="blog_chat.html#id="+userId;
+    }
+
+</script>
+</body>
+</html>

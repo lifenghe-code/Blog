@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简易聊天室</title>
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/blog-chat.css">
+</head>
+
+<body>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+</script>
+<div class="nav">
+    <!-- logo -->
+    <img src="../resources/image/spiderMan.jpg" alt="">
+    <div class="title">我的博客系统</div>
+    <!-- 只是一个空白，用来把后面的链接挤过去 -->
+    <!-- 这是一个简单粗暴的写法 -->
+    <div class="spancer"></div>
+    <button onclick="homePage()">主页</button>
+    <!-- 这里的地址回头在说 -->
+    <a href="#">注销</a>
+</div>
+
+<div class="talk_con" id="talk_con_id">
+    <div class="talk_show" id="words">
+        <div class="atalk"><span id="asay">欢迎进入公共聊天室</span></div>
+    </div>
+    <div class="talk_input"  id="talk_input_id">>
+        <input type="text" class="talk_word" id="talkwords">
+        <input type="button" value="发送" class="talk_sub" id="talksub" onclick="sendMesg()">
+    </div>
+</div>
+
+<script>
+    setInterval(function(){
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:18081/chat/message');
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                returnMesg = JSON.parse(xhr.responseText);
+                showMesg(returnMesg);
+                console.log(returnMesg);
+            }
+        } },
+        1000);
+</script>
+
+<script>
+    function sendMesg(){
+        var stamp= new Date().getTime() + 8 * 60 * 60 * 1000;
+        // 格式化北京时间为"YYYY-MM-DD HH:mm:ss"
+        var currentDate = new Date(stamp).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 19);
+        let mesg = document.getElementById("talkwords").value;
+        var sendData = {"userId":userId, "mesg":mesg, "date":currentDate};
+        const jsonString = JSON.stringify(sendData);
+        let xhr = new XMLHttpRequest()
+        //alert(jsonString);
+        xhr.open('POST', 'http://localhost:18081/chat/send')
+        xhr.send(jsonString)
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                returnMesg = JSON.parse(xhr.responseText);
+                showMesg(returnMesg);
+                document.getElementById("words").scrollTop = document.getElementById("words").scrollHeight
+                document.getElementById("talkwords").value = "";
+                console.log(returnMesg);
+            }
+        }
+    }
+</script>
+
+<script>
+    $(function()  // 网页打开时，直接调用的函数
+    {
+        //解析url中的内容，提取用户账号
+        var loc = location.href;
+        var n1 = loc.length;
+        var n2 = loc.indexOf('=');
+        userId = decodeURI(loc.substr(n2 + 1, n1 - n2));
+    }
+    )
+</script>
+
+<script>
+    function showMesg(mesg){
+        let charContent = "";
+        for(let index in returnMesg.data){
+            str = '<div class="atalk"><span>' + 
+                returnMesg.data[index].sendUserName+"：<br>"+  returnMesg.data[index].mesgText+'</span></div>'; 
+            charContent += str;
+        }
+        document.getElementById("words").innerHTML = charContent;
+    }
+</script>
+
+<script>
+    function blogPublic(){
+        window.location.href="blog_public.html#id="+userId;
+    }
+
+</script>
+
+<script>
+    function homePage(){
+        window.location.href="blog_list.html#id="+userId;
+    }
+
+</script>
+</body>
+</html>
+

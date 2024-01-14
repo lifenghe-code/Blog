@@ -1,0 +1,101 @@
+/* 专门写博客列表页的专属样式 */
+/* 设置整个div的样式 */
+.blog{
+    /* 设置间距 */
+    padding:20px;
+}
+/* 设置博客标题 */
+.blog .title{
+    /* 让文字字体变大 */
+    font-size: 22px;
+    /* 让文字居中显示 */
+    text-align: center;
+    /* 让文字字体加粗 */
+    font-weight: 900;
+}
+.blog .author{
+    /* 让文字字体变大 */
+    font-size: 20px;
+    /* 让文字居中显示 */
+    text-align: center;
+    /* 让文字字体加粗 */
+    font-weight: 900;
+}
+/* 设置发布时间 */
+.blog .date{
+    /* 让时间文字居中 */
+    text-align: center;
+    color:rgb(0,128,0);
+    /* 设置垂直方向间隔15px */
+    padding:15px;
+}
+/* 设置摘要 */
+.blog .desc{
+    /* 设置段落缩进 使用em单位，一个em等于一个文字大小，是以相对大小的单位*/
+    text-indent: 2em;
+}
+.blog #detail{
+    /* 将行内元素改成块级标签 */
+    display:block;
+    width: 150px;
+    height:40px;
+    /* 设置边框 */
+    border:2px solid black;
+
+    /* 把文字的颜色和下划线修改一下 */
+    color:black;
+    /* 设置文字水平居中 */
+    text-align: center;
+    /* 去掉下划线 */
+    text-decoration: none;
+    /* 让文字居中显示 可以通过将文字的行高和元素的高度设置一样，这样文字就会在元素中垂直居中显示 */
+    line-height: 40px;
+
+    /* 水平居中 */
+    margin:20px auto;
+
+    /* 加上背景切换的过渡效果，all表示针对所有的变化都进行过度，2s意思是过度时间是2s */
+    transition:all 0.3s;
+}
+/* :hover 是一个伪类选择器，它不是选中某个元素，而是选中元素的某种状态*/
+/* 具体来说，:hover就是选中了元素被鼠标悬停的状态 */
+.blog a:hover {
+    /* 鼠标悬停的时候，a标签的背景颜色变为灰色 */
+    background-color: gray;
+    /* 字体颜色变成白色 */
+    color: white;
+}
+.row #more{
+    width:200px;
+    height:40px;
+    color:white;
+    background-color:skyblue;
+    /* 设置文字大小 */
+    font-size: 17px;
+    /* 文字水平居中 */
+    text-align:center;
+    /* 文字垂直居中，当文字的行高和父元素的高度相同，文字就会垂直居中显示 */
+    line-height: 40px;
+    /* 取消按钮默认的边框 */
+    border:none;
+    /* 设置圆角矩形 */
+    border-radius: 10px;
+    /* 加上背景切换的过渡效果，all表示针对所有的变化都进行过度，2s意思是过度时间是2s */
+    transition:all 0.3s;
+    margin-top:70px;
+
+}
+
+.row #more:hover {
+    /* 鼠标悬停的时候，a标签的背景颜色变为灰色 */
+    background-color: gray;
+    /* 字体颜色变成白色 */
+    color: white;
+}
+
+.row #detail:hover {
+    /* 鼠标悬停的时候，a标签的背景颜色变为灰色 */
+    background-color: gray;
+    /* 字体颜色变成白色 */
+    color: white;
+}

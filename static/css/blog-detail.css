@@ -1,0 +1,27 @@
+/* 设置标题 */
+.container-right h3{
+    /* 设置字体大小 */
+    font-size: 22px;
+    /* 设置文本居中 */
+    text-align: center;
+    /* 设置字体加粗 */
+    font-weight: 900;
+    /* 设置内边距 上下20px,左右为0 */
+    padding:20px 0;
+}
+/* 设置发布时间 */
+.container-right .data{
+    /* 设置文字居中 */
+    text-align: center;
+    /* 设置字体颜色 */
+    color: rgb(0,128,0);
+    /* 设置div标签的内边距，上下位10px，左右为0 */
+    padding:10px 0;
+}
+/* 设置段落 p标签为块级元素*/
+.container-right .content p{
+    /* 设置首行缩进两个字符 */
+    text-indent:2em;
+    /* 设置每个段落的外边距，底部外边距为5px */
+    margin-bottom: 5px;
+}

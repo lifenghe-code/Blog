@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客详情页</title>
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/blog-detail.css">
+</head>
+<body>
+<script src="../static/js/func.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+</script>
+<!-- 导航栏 nav 是导航整个次的缩写 -->
+<div class="nav">
+    <!-- logo -->
+    <img src="../image/logo.png" alt="">
+    <div class="title">我的博客系统</div>
+    <!-- 只是一个空白，用来把后面的链接挤过去 -->
+    <!-- 这是一个简单粗暴的写法 -->
+    <div class="spancer"></div>
+    <button onclick="homePage()">主页</button>
+    <button onclick="edit()">写博客</button>
+    <!-- 这里的地址回头在说 -->
+    <a href="#">注销</a>
+</div>
+<!-- 页面的主题部分 -->
+<div class="container">
+    <!-- 左侧信息 -->
+    <div class="container-left">
+        <!-- 这个div表示整个用户信息的区域 -->
+        <div class="card">
+            <!-- 用户的头像 -->
+            <img src="../image/head_portrait.jpg" alt="">
+            <!-- 用户名 -->
+            <h3>小张学编程</h3>
+            <!-- GitHub地址 -->
+            <a href="https://github.com">github 地址</a>
+            <!-- 统计信息 -->
+            <div class="counter">
+                <span>文章</span>
+                <span>分类</span>
+            </div>
+            <div class="counter">
+                <span>2</span>
+                <span>1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧信息 -->
+    <div class="container-right">
+        <h3 id = title>
+
+        </h3>
+        <div class="data"  id = date>
+
+        </div>
+        <div class="content" id = content style=width:19cm;word-break:break-all;>
+
+        </div>
+
+
+    </div>
+</div>
+<script>
+    $ (function()
+    {
+        //标题中中不能出现 &
+        result = addressResolution(location.href)
+        userId = result["userId"]
+        var box0 = document.getElementById('title');
+        var box1 = document.getElementById('date');
+        var box2 = document.getElementById('content');
+        box0.innerHTML = result["article"][0];
+        box1.innerHTML = result["article"][1];
+        box2.innerHTML = result["article"][2];
+    }
+    )
+</script>
+<script>
+    function blogPublic(){
+        window.location.href="blog_public.html#id="+userId;
+    }
+
+</script>
+
+<script>
+    function homePage(){
+        window.location.href="blog_list.html#id="+userId;
+    }
+</script>
+
+</body>
+</html>

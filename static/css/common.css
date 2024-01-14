@@ -1,0 +1,137 @@
+/* 公共的样式 */
+/* 不论写什么样的页面，先写这个是没有错的 */
+*{
+    /* 设置盒子，不要让边框将它撑大 */
+    box-sizing: border-box;
+    /* 去除浏览器默认样式 */
+    padding:0;
+    margin:0;
+}
+/* html的父元素是浏览器的窗口 */
+html {
+    height:100%;
+}
+/* 图片的父元素是body，图片作为背景图，需要占满整个浏览器窗口，所以图片要填满整个父元素 */
+body {
+    /*  */
+    background-image: url(../../image/scenery2.jpg);
+    /* 设置背景不平铺 */
+    background-repeat: no-repeat;
+    /* 设置背景位置水平居中，垂直居中 */
+    background-position: center center;
+    /* 让背景图足够大，填满这个元素，有可能导致图片的某些部分无法显示完全 */
+    background-size: cover;
+    /* 设置body占满整个父元素 */
+    height:100%;
+}
+/* 导航栏 */
+.nav {
+    height:50px;
+    background-color:rgba(50, 50, 50,0.4);
+    color:white;
+
+    /* 使用弹性布局 */
+    display: flex;
+    /* 让导航栏中的内容垂直居中 */
+    align-items: center;
+}
+.nav img{
+    width:40px;
+    height:40px;
+    /* 通过给图片设置左右外边距，从而让图片与导航栏和文字隔开距离 */
+    margin-left: 40px;
+    margin-right: 30px;
+    /* 设置圆角矩形，让logo编程圆形 */
+    border-radius:20px
+}
+.nav a{
+    color:white;
+    /* 去掉a标签的下划线 */
+    text-decoration: none;
+    /* 此处使用内边距把多个连接分出距离 */
+    /* 这里使用内边距和外边距都可以，但是使用内边距可以扩大点击的范围 */
+    padding:0 10px;
+}
+/* 对导航栏中，空白位置设置宽度，用来将后面的连接挤到后面 */
+.nav .spancer{
+    width:70%;
+}
+
+/* 页面的主题部分，也称为"版心" */
+.container{
+    /* 设置成固定宽度，水平居中 */
+    width: 1000px;
+    /* 表示上下外边距是0，左右外边距是水平居中，设置成auto浏览器自动调节 */
+    margin:0 auto;
+    /* 设置高度，和浏览器高度一样高 */
+    /* height:100%; */
+    height:calc(100% - 50px);
+    /* background-color:rgba(255, 255, 255, 0.6); */
+    /* 对container中的元素设置弹性布局 */
+    display:flex;
+    /* 让container中的元素紧靠左右边界，中间等间距等间距铺开 */
+    justify-content: space-between;
+}
+.container-left{
+    height:100%;
+    width:200px;
+
+}
+.container-right{
+    height:100%;
+    /* 留出5px的缝隙 在container中使用justify-content: space-between;让元素紧靠左右两边，中间等间距铺开，这样留出的缝隙就在中间了*/
+    width:795px;
+    /* 对博客列表设置为白色半透明的背景 */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* 设置圆角矩形 */
+    border-radius:10px;
+    /* 设置内边距 让文字和边框产生距离*/
+    padding:20px;
+
+    /* 当内容超出范围是，自动添加滚动条 */
+    overflow:auto;
+
+
+}
+/* 设置用户信息区域 */
+.card{
+    /* container-left设置为白色半透明 */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* 设置圆角矩形 */
+    border-radius:10px;
+    /* 设置内边距 */
+    padding:30px;
+}
+/* 设置用户头像 */
+.card img{
+    /* 设置container-lett时宽度为200px,.card中设置内边距为30px,所以图片的位置只有140px */
+    width:140px;
+    height:140px;
+    border-radius: 70px;
+}
+/* 设置用户名 */
+.card h3{
+    /* 设置文字水平居中 */
+    text-align: center;
+    /* 使用内边距把用户名和图片撑开一个距离 */
+    padding :10px;
+}
+/* 设置github地址 */
+.card a{
+    text-align:center;
+    /* 文字设置成灰色 */
+    color:gray;
+    /* 去掉下划线 */
+    text-decoration: none;
+    /* 需要把a标签转成块级元素，上述的a标签使用的文字水平居中才有意义 */
+    display:block;
+    /* 让a标签和下面的文字有间隔 */
+    margin-bottom: 10px;
+}
+.card .counter{
+    /* 使用弹性布局 */
+    display: flex;
+    padding:5px;
+    /* 于左右边界由间隔，对水平的元素进行均匀排列 */
+    justify-content: space-around;
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客编辑页</title>
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/blog-edit.css">
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+</script>
+<!-- 导航栏 nav 是导航整个次的缩写 -->
+<div class="nav">
+    <!-- logo -->
+    <img src="../image/logo.png" alt="">
+    <div class="title">我的博客系统</div>
+    <!-- 只是一个空白，用来把后面的链接挤过去 -->
+    <!-- 这是一个简单粗暴的写法 -->
+    <div class="spancer"></div>
+    <button onclick="homePage()">主页</button>
+    <!-- 这里的地址回头在说 -->
+    <a href="login.html">注销</a>
+</div>
+<!-- 博客编辑页的版心 -->
+<div class="blog-edit-container">
+    <form target="form"  id = "editForm" name = "editForm">
+        <!-- 标题编辑区 -->
+        <div class="title">
+            <input type="text" id="title-input" name = "Title">
+        </div>
+        <div class = "row">
+            <textarea id="inputbox" name="Input" rows="10" cols="50" required></textarea>
+        </div>
+
+        <div >
+                <input type="submit" id="submit">
+        </div>
+
+    </form>
+</div>
+<script>
+    $ (function()
+    {
+        //获取用户ID
+        var loc = location.href;
+        var n1 = loc.length;
+        var n2 = loc.indexOf('=');
+        userId = decodeURI(loc.substr(n2 + 1, n1 - n2));
+    }
+    )
+</script>
+<script>
+
+    // $(function ())是文档document加载完自动调用的函数
+    /*
+     获取form元素，调用其ajaxForm(...)方法
+     内部的function(data)的data就是后台返回的数据
+    */
+    let form = document.querySelector('#editForm')
+    form.addEventListener('submit', function (e) {
+        var loc = location.href;
+        var n1 = loc.length;
+        var n2 = loc.indexOf('=');
+        userId = decodeURI(loc.substr(n2 + 1, n1 - n2));
+        //阻止表单默认行为
+        e.preventDefault()
+        // 创建FormData()实例,快速获取表单中的数据
+        let fd = new FormData(form)
+        fd.append("UserId",userId)
+        let xhr = new XMLHttpRequest()
+
+        xhr.open('POST', 'http://localhost:18081/user/edit')
+        xhr.send(fd)
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var returnMesg = JSON.parse(xhr.responseText);
+                console.log(returnMesg);
+                // alert(returnMesg.data);
+                if (returnMesg.flag === true){
+                    alert("提交成功");
+                    window.location.href = "blog_list.html#id="+userId;
+                }
+
+            }
+        }
+    });
+</script>
+<script>
+    function blogPublic(){
+        window.location.href="blog_public.html#id="+userId;
+    }
+
+</script>
+
+<script>
+    function homePage(){
+        window.location.href="blog_list.html#id="+userId;
+    }
+</script>
+</body>
+</html>

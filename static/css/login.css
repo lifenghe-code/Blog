@@ -1,0 +1,119 @@
+/* 这个登录页的css */
+.login-container{
+    width:100%;
+    height:calc(100% - 50px);
+
+    /* 为了让login-dialog垂直水平居中，使用弹性布局 */
+    display: flex;
+    /* 设置水平居中 */
+    justify-content: center;
+    /* 设置垂直居中 */
+    align-items: center;
+}
+/* 设置登录的对话框 */
+.login-dialog{
+    width:500px;
+    height:400px;
+    background-color: rgba(255,255,255, 0.8);
+}
+
+/* 登录标题 */
+.login-dialog h3{
+    /* 设置字体大小 */
+    font-size: 24px;
+    /* 设置字体加粗 */
+    font-weight: 900;
+    /* 设置文字居中显示 */
+    text-align: center;
+    /* 设置外边距，上下外边距为40px ,左右为0*/
+    margin-top:60px;
+    margin-bottom:40px;
+}
+
+/* 针对每一行的设置 */
+.row{
+    /* 设置每行的高度 */
+    height:50px;
+    /* 设置每行的宽度 */
+    width:100%;
+    /* 设置弹性布局 */
+    display: flex;
+    /* 水平方向元素之间的排列，与左右边界有间隔均匀排列 */
+    justify-content: space-around;
+    /* 垂直方向居中 */
+    align-items: center;
+}
+
+/* 每一行的文字 */
+.row span{
+    font-size: 20px;
+    width:80px;
+    /* 将行内元素span标签转换为块级元素 */
+    display: block;
+    /* 设置左内边距为20px */
+    padding-left: 20px;
+}
+.row #name{
+    width:350px;
+    height: 40px;
+    /* 设置在输入框中输入的内容的字体大小为20px */
+    font-size:20px;
+    /* 设置输入的内容距离输入左边框10px */
+    text-indent:10px;
+    /* 设置圆角矩形 */
+    border-radius:10px;
+
+}
+.row #passWord{
+    width: 350px;
+    height:40px;
+    font-size: 20px;
+    text-indent: 10px;
+    border-radius: 10px;
+
+}
+.row #submit{
+    width:150px;
+    height:40px;
+    color:white;
+    background-color:skyblue;
+    /* 设置文字大小 */
+    font-size: 17px;
+    /* 文字水平居中 */
+    text-align:center;
+    /* 文字垂直居中，当文字的行高和父元素的高度相同，文字就会垂直居中显示 */
+    line-height: 40px;
+    /* 取消按钮默认的边框 */
+    border:none;
+    /* 设置圆角矩形 */
+    border-radius: 10px;
+    /* 加上背景切换的过渡效果，all表示针对所有的变化都进行过度，2s意思是过度时间是2s */
+    transition:all 0.3s;
+    margin-top:70px;
+}
+.row #register{
+    width:200px;
+    height:40px;
+    color:white;
+    background-color:skyblue;
+    /* 设置文字大小 */
+    font-size: 17px;
+    /* 文字水平居中 */
+    text-align:center;
+    /* 文字垂直居中，当文字的行高和父元素的高度相同，文字就会垂直居中显示 */
+    line-height: 40px;
+    /* 取消按钮默认的边框 */
+    border:none;
+    /* 设置圆角矩形 */
+    border-radius: 10px;
+    /* 加上背景切换的过渡效果，all表示针对所有的变化都进行过度，2s意思是过度时间是2s */
+    transition:all 0.3s;
+    margin-top:70px;
+}
+.row #submit:hover{
+    background: gray;
+}
+
+.row #register:hover{
+    background: gray;
+}

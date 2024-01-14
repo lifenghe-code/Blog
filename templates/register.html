@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客注册页</title>
+  <link rel="stylesheet" href="../static/css/common.css">
+  <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+</script>
+<!-- 导航栏 nav 是导航整个次的缩写 -->
+<div class="nav">
+  <!-- logo -->
+  <!--img src="../image/logo.png" alt=""背景图片-->
+  <div class="title">我的博客系统</div>
+  <!-- 只是一个空白，用来把后面的链接挤过去 -->
+  <!-- 这是一个简单粗暴的写法 -->
+  <div class="spancer"></div>
+</div>
+<!-- 登录页的版心 -->
+<div class="login-container">
+  <!-- 登录对话框 -->
+  <div class="login-dialog">
+    <h3>注册</h3>
+    <!-- 这里使用form包裹一下 下列内容，便于后续给服务器提交数据 -->
+
+    <form target="form"  name = "registerForm"  id = "registerForm">  <!-- 服务器地址 -->
+      <div class="row">
+        <span>用户名</span>
+        <input type="text" id="name" name="Name">
+      </div>
+      <div class="row">
+        <span>密码</span>
+        <input type="password" id="passWord" name="PassWord">
+      </div>
+      <div class="row">
+        <input type="submit" id="submit" value="注册">
+      </div>
+
+    </form>
+
+
+  </div>
+</div>
+
+<script>
+  // $(function ())是文档document加载完自动调用的函数
+  /*
+   获取form元素，调用其ajaxForm(...)方法
+   内部的function(data)的data就是后台返回的数据
+  */
+  let form = document.querySelector('#registerForm')
+  form.addEventListener('submit', function (e) {
+    //阻止表单默认行为
+    e.preventDefault()
+    // 创建FormData()实例,快速获取表单中的数据
+    let fd = new FormData(form)
+    let xhr = new XMLHttpRequest()
+    xhr.open('POST', 'http://localhost:18081/user/register')
+    xhr.send(fd)
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var returnMesg = JSON.parse(xhr.responseText);
+        console.log(returnMesg);
+        // alert(returnMesg.data);
+        if (returnMesg.flag === true){
+          alert("注册成功");
+          window.location.href = "login.html";
+        }
+        else{
+          alert("用户名存在，请重新输入");
+        }
+
+      }
+    }
+  });
+</script>
+
+<script>
+
+</script>
+</body>
+</html>
