@@ -57,9 +57,10 @@
         <h3 id = title>
 
         </h3>
+        <div class="data"  id = author>
+        </div>
         <div class="data"  id = date>
         </div>
-
         <div class="content" id = content style=width:19cm;word-break:break-all;>
         </div>
 
@@ -83,13 +84,15 @@
         result = addressResolution(location.href)
         userId = result["userId"]
         var box0 = document.getElementById('title');
-        var box1 = document.getElementById('date');
-        var box2 = document.getElementById('content');
-        var box3 = document.getElementById('comment');
-        box0.innerHTML = result["article"][0];
+        var box1 = document.getElementById('author');
+        var box2 = document.getElementById('date');
+        var box3 = document.getElementById('content');
+        var box4 = document.getElementById('comment');
+        box0.innerHTML = result["article"][2];
         box1.innerHTML = result["article"][1];
-        box2.innerHTML = result["article"][2];
-        box3.innerHTML = result["article"][3];
+        box2.innerHTML = result["article"][3];
+        box3.innerHTML = result["article"][4];
+        box4.innerHTML = result["article"][5];
 
     }
     )
@@ -111,7 +114,7 @@
     function postComment(){
         let data = {}
         data["userId"] = userId
-        data["articleId"] = articleId;
+        //data["articleId"] = articleId;
         data["comment"] = document.getElementById('commentInput').value;
         let xhr = new XMLHttpRequest()
         xhr.open('POST', 'http://localhost:18081/article/comment')

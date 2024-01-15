@@ -87,7 +87,7 @@
 
                             let div2 = document.createElement("div");
                             div2.className = "author";
-                            div2.innerHTML = returnMesg.data[i]["Author"];
+                            div2.innerHTML = returnMesg.data[i]["AuthorName"];
                             div2.id = "T"+i;
 
 
@@ -148,11 +148,13 @@
         let titleId = "T"+num;
         let dateId = "D"+num;
         let contentId = "C"+num;
-
+        let authorId = returnMesg.data[num]["AuthorId"];
+        let authorName = returnMesg.data[num]["AuthorName"];
         let title = document.getElementById(titleId).innerText;
         let date = document.getElementById(dateId).innerText;
         let content = document.getElementById(contentId).innerText;
-        let s = title + "&"+date + "&"+content;
+
+        let s = authorId +"&"+authorName+"&"+title + "&"+date + "&"+content;
         window.location.href="blog_detail.html#"+"id="+userId +"%"+'txt=' + encodeURI(s);
 
     }
