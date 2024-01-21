@@ -150,12 +150,14 @@
         let contentId = "C"+num;
         let authorId = returnMesg.data[num]["AuthorId"];
         let authorName = returnMesg.data[num]["AuthorName"];
+        let articleId = returnMesg.data[num]["ArticleId"];
+        let comments = returnMesg.data[num]["Comments"];
         let title = document.getElementById(titleId).innerText;
         let date = document.getElementById(dateId).innerText;
         let content = document.getElementById(contentId).innerText;
-
-        let s = authorId +"&"+authorName+"&"+title + "&"+date + "&"+content;
-        window.location.href="blog_detail.html#"+"id="+userId +"%"+'txt=' + encodeURI(s);
+        let s = authorId +"&"+authorName+"&"+articleId+"&"+title + "&"+date + "&"+content + "&" + comments;
+        
+        window.location.href="blog_detail.html#"+"id="+userId +"%"+'txt=' +s;
 
     }
 </script>
