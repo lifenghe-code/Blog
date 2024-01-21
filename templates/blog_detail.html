@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,212 +8,181 @@
     <link rel="stylesheet" href="../static/css/common.css">
     <link rel="stylesheet" href="../static/css/blog-detail.css">
 </head>
+
 <body>
-<script src="../static/js/func.js"></script>
+    <script src="../static/js/func.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
-</script>
-<!-- 导航栏 nav 是导航整个次的缩写 -->
-<div class="nav">
-    <!-- logo -->
-    <img src="../image/logo.png" alt="">
-    <div class="title">我的博客系统</div>
-    <!-- 只是一个空白，用来把后面的链接挤过去 -->
-    <!-- 这是一个简单粗暴的写法 -->
-    <div class="spancer"></div>
-    <button onclick="homePage()">主页</button>
-    <button onclick="edit()">写博客</button>
-    <!-- 这里的地址回头在说 -->
-    <a href="#">注销</a>
-</div>
-<!-- 页面的主题部分 -->
-<div class="container">
-    <!-- 左侧信息 -->
-    <div class="container-left">
-        <!-- 这个div表示整个用户信息的区域 -->
-        <div class="card">
-            <!-- 用户的头像 -->
-            <img src="../image/head_portrait.jpg" alt="">
-            <!-- 用户名 -->
-            <h3>小张学编程</h3>
-            <!-- GitHub地址 -->
-            <a href="https://github.com">github 地址</a>
-            <!-- 统计信息 -->
-            <div class="counter">
-                <span>文章</span>
-                <span>分类</span>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+    </script>
+    <!-- 导航栏 nav 是导航整个次的缩写 -->
+    <div class="nav">
+        <!-- logo -->
+        <img src="../image/logo.png" alt="">
+        <div class="title">我的博客系统</div>
+        <!-- 只是一个空白，用来把后面的链接挤过去 -->
+        <!-- 这是一个简单粗暴的写法 -->
+        <div class="spancer"></div>
+        <button onclick="homePage()">主页</button>
+        <button onclick="edit()">写博客</button>
+        <!-- 这里的地址回头在说 -->
+        <a href="#">注销</a>
+    </div>
+    <!-- 页面的主题部分 -->
+    <div class="container">
+        <!-- 左侧信息 -->
+        <div class="container-left">
+            <!-- 这个div表示整个用户信息的区域 -->
+            <div class="card">
+                <!-- 用户的头像 -->
+                <img src="../image/head_portrait.jpg" alt="">
+                <!-- 用户名 -->
+                <h3>小张学编程</h3>
+                <!-- GitHub地址 -->
+                <a href="https://github.com">github 地址</a>
+                <!-- 统计信息 -->
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
             </div>
-            <div class="counter">
-                <span>2</span>
-                <span>1</span>
+        </div>
+
+        <!-- 右侧信息 -->
+        <div class="container-right">
+            <h3 id=title>
+
+            </h3>
+            <div class="data" id=author>
+            </div>
+            <div class="data" id=date>
+            </div>
+            <div class="content" id=content style=width:19cm;word-break:break-all;>
+            </div>
+            <hr>
+            <div class="comment" id=comment>
+            </div>
+            <ul id="ul"></ul>
+            <div class="containerComment">
+                <input type="text" class="commentInput" id="commentInput">
+                <div class="row">
+                    <input type="submit" id="submit" value="提交" onclick="postComment()">
+                </div>
+
             </div>
         </div>
     </div>
+    <script>
+        $(function () {
+            //标题中中不能出现 &
+            let result = addressResolution(location.href)
+            userId = result["userId"]
+            authorId = result["article"][0];
+            articleId = result["article"][2];
+            /*
+            authorId 
+            authorName
+            articleId
+            title 
+            date
+            content
+            comments;
+            */
 
-    <!-- 右侧信息 -->
-    <div class="container-right">
-        <h3 id = title>
+            var box0 = document.getElementById('title');
+            var box1 = document.getElementById('author');
+            var box2 = document.getElementById('date');
+            var box3 = document.getElementById('content');
+            var box4 = document.getElementById('comment');
 
-        </h3>
-        <div class="data"  id = author>
-        </div>
-        <div class="data"  id = date>
-        </div>
-        <div class="content" id = content style=width:19cm;word-break:break-all;>
-        </div>
-
-        <div class="comment" id = comment>
-        </div>
-
-        <div class="containerComment">
-        <input type="text" class="commentInput" id="commentInput">
-        <ul id="ul"></ul>
-        <div class="row">
-            <input type="submit" id="submit" value="提交" onclick="postComment()">
-        </div>
-
-        </div>
-    </div>
-</div>
-<script>
-    $ (function()
-    {
-        //标题中中不能出现 &
-        let result = addressResolution(location.href)
-        userId = result["userId"]
-        authorId =  result["article"][0];
-        articleId = result["article"][2];
-        /*
-        authorId 
-        authorName
-        articleId
-        title 
-        date
-        content
-        comments;
-        */
-       
-        var box0 = document.getElementById('title');
-        var box1 = document.getElementById('author');
-        var box2 = document.getElementById('date');
-        var box3 = document.getElementById('content');
-        var box4 = document.getElementById('comment');
-
-        box0.innerHTML = result["article"][3];
-        box1.innerHTML = result["article"][1];
-        box2.innerHTML = result["article"][4];
-        box3.innerHTML = result["article"][5];
-        comment = "["+result["article"][6]+"]";
-        console.log(comment);
-        let jsonComment = JSON.parse(comment)
-         for(let i = 0;i < jsonComment.length; i++){
-             box4.innerHTML += jsonComment[i]["userName"]+"<br>"+jsonComment[i]["comment"]+"<br>"
-             +jsonComment[i]["date"]+"<br>";
-         }
-    }
-    )
-</script>
-<script>
-    function blogPublic(){
-        window.location.href="blog_public.html#id="+userId;
-    }
-
-</script>
-
-<script>
-    function homePage(){
-        window.location.href="blog_list.html#id="+userId;
-    }
-</script>
-
-<script>
-    function postComment(){
-        /* 
-        {
-            usereId：评论者的ID
-            articleId：评论文章的ID
-            comment：评论内容
-        }
-         */
-        var stamp= new Date().getTime() + 8 * 60 * 60 * 1000;
-        // 格式化北京时间为"YYYY-MM-DD HH:mm:ss"
-        var currentDate = new Date(stamp).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 19);
-        let data = {}
-        data["userId"] = userId;
-        data["articleId"] = articleId;
-        data["comment"] = document.getElementById('commentInput').value;
-        data["date"] = currentDate;
-        console.log(data);
-        let xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:18081/article/comment')
-        const jsonString = JSON.stringify(data);
-        xhr.send(jsonString);
-        xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var returnMesg = JSON.parse(xhr.responseText);
-            console.log(returnMesg);
-            if (returnMesg.flag === true){
-                alert("评论成功");
-            }
-
-        }
-        //1、获取元素
-        var txt = document.querySelectorById("content");
-        var btn = document.querySelectorById("submit");
-        var ul = document.querySelectorById("ul");
-  
-       
-        //创建元素li作为留言区
-        var li = document.createElement("li");
-        //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
-        li.innerHTML = txt.value + "<a href='javascript:;'>删除</a>"
-        txt.value = "";//添加之后文本框的内容清空
-        //将留言添加到ul中，而且在最上方
-        ul.insertBefore(li, ul.children[0]);
-        //当点击删除时删除ul中的li
-        var as = document.querySelectorAll("a");
-        //循环给每个删除绑定事件
-        for (var i = 0; i < as.length; i++) {
-            as[i].onclick = function () {
-                //删除当前a标签所在位置的父节点li
-                ul.removeChild(this.parentNode);
-            }
-        }
-        }
-        }
-</script>
-
-<script>
-    //1、获取元素
-    var txt = document.querySelectorById("content");
-    var btn = document.querySelectorById("submit");
-    var ul = document.querySelectorById("ul");
-    //2、给button绑定点击事件
-    btn.onclick = function () {
-            if (txt.value == "") {//当文本框中没有文字时，提示
-                alert("您没有输入内容")
-            } else {
+            box0.innerHTML = result["article"][3];
+            box1.innerHTML = result["article"][1];
+            box2.innerHTML = result["article"][4];
+            box3.innerHTML = result["article"][5];
+            // 严格符合json数据格式
+            comment = "[" + result["article"][6] + "]";
+            console.log(comment);
+            let jsonComment = JSON.parse(comment)
+            //1、获取元素
+            var txt = document.getElementById("content");
+            var btn = document.getElementById("submit");
+            var ul = document.getElementById("ul");
+            for (let i = 0; i < jsonComment.length; i++) {
                 //创建元素li作为留言区
                 var li = document.createElement("li");
                 //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
-                li.innerHTML = txt.value + "<a href='javascript:;'>删除</a>"
-                txt.value = "";//添加之后文本框的内容清空
+                li.innerHTML = jsonComment[i]["userName"] + "<br>" + jsonComment[i]["comment"] + "<br>"
+                    + jsonComment[i]["date"];
+                    // + "<a href='javascript:;'>删除</a>"
                 //将留言添加到ul中，而且在最上方
-                ul.insertBefore(li, ul.children[0]);
-                //当点击删除时删除ul中的li
-                var as = document.querySelectorAll("a");
-                //循环给每个删除绑定事件
-                for (var i = 0; i < as.length; i++) {
-                    as[i].onclick = function () {
-                        //删除当前a标签所在位置的父节点li
-                        ul.removeChild(this.parentNode);
+                ul.insertBefore(li, ul.children[-1]);
+            }
+
+            // for (var i = 0; i < as.length; i++) {
+            //     as[i].onclick = function () {
+            //         //删除当前a标签所在位置的父节点li
+            //         ul.removeChild(this.parentNode);
+            //     }
+            // }
+        }
+        )
+    </script>
+    <script>
+        function blogPublic() {
+            window.location.href = "blog_public.html#id=" + userId;
+        }
+
+    </script>
+
+    <script>
+        function homePage() {
+            window.location.href = "blog_list.html#id=" + userId;
+        }
+    </script>
+
+    <script>
+        function postComment() {
+            /* 
+            {
+                usereId：评论者的ID
+                articleId：评论文章的ID
+                comment：评论内容
+            }
+             */
+            var stamp = new Date().getTime() + 8 * 60 * 60 * 1000;
+            // 格式化北京时间为"YYYY-MM-DD HH:mm:ss"
+            var currentDate = new Date(stamp).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 19);
+            let data = {}
+            data["userId"] = userId;
+            data["articleId"] = articleId;
+            data["comment"] = document.getElementById('commentInput').value;
+            data["date"] = currentDate;
+            console.log(data);
+            let xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:18081/article/comment')
+            const jsonString = JSON.stringify(data);
+            xhr.send(jsonString);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var returnMesg = JSON.parse(xhr.responseText);
+                    console.log(returnMesg);
+                    if (returnMesg.flag === true) {
+                        alert("评论成功");
+                        window.location.reload();
                     }
+
                 }
+
             }
         }
-</script>
+    </script>
+
 </body>
+
 </html>
