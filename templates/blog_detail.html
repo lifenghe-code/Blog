@@ -39,7 +39,7 @@
                 <!-- 用户的头像 -->
                 <img src="../image/head_portrait.jpg" alt="">
                 <!-- 用户名 -->
-                <h3>小张学编程</h3>
+                <h3>学编程</h3>
                 <!-- GitHub地址 -->
                 <a href="https://github.com">github 地址</a>
                 <!-- 统计信息 -->
@@ -48,8 +48,8 @@
                     <span>分类</span>
                 </div>
                 <div class="counter">
-                    <span>2</span>
-                    <span>1</span>
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
         </div>
@@ -65,6 +65,7 @@
             </div>
             <div class="content" id=content style=width:19cm;word-break:break-all;>
             </div>
+            <hr> <!--分割线-->
             <hr>
             <div class="comment" id=comment>
             <ul id="ul"> </ul>
@@ -110,14 +111,14 @@
             var stamp = new Date().getTime() + 8 * 60 * 60 * 1000;
             // 格式化北京时间为"YYYY-MM-DD HH:mm:ss"
             var currentDate = new Date(stamp).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 19);
-            let data = {}
+            let data = {};
             data["userId"] = userId;
             data["articleId"] = articleId;
             data["comment"] = document.getElementById('commentInput').value;
             data["date"] = currentDate;
             console.log(data);
-            let xhr = new XMLHttpRequest()
-            xhr.open('POST', 'http://localhost:18081/article/comment')
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:18081/article/comment');
             const jsonString = JSON.stringify(data);
             xhr.send(jsonString);
             xhr.onreadystatechange = function () {
