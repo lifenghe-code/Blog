@@ -159,15 +159,18 @@
 
 <script>
     function getClickID(obj){
+        console.log(returnMesg);
         let detailId = obj.id;
         let num = detailId.substring(6,);
-        let titleId = "title"+num;
-        let dateId = "date"+num;
-        let contentId = "desc"+num;
-        let title = document.getElementById(titleId).innerText;
-        let date = document.getElementById(dateId).innerText;
-        let content = document.getElementById(contentId).innerText;
-        let s = title + "&"+date + "&"+content;
+        console.log(returnMesg.data[num]);
+        let authorId = returnMesg.data[num]["AuthorId"];
+        let authorName = returnMesg.data[num]["AuthorName"];
+        let articleId = returnMesg.data[num]["ArticleId"];
+        let comments = returnMesg.data[num]["Comments"];
+        let title = returnMesg.data[num]["Title"];
+        let date = returnMesg.data[num]["Date"];
+        let content = returnMesg.data[num]["Content"];
+        let s = authorId +"&"+authorName+"&"+articleId+"&"+title + "&"+date + "&"+content + "&" + comments;
         window.location.href="blog_detail.html?"+"id="+userId +"%"+'txt=' + encodeURI(s);
     }
 

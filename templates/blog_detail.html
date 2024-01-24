@@ -55,7 +55,7 @@
         </div>
 
         <!-- 右侧信息 -->
-        <div class="container-right">
+        <div class="container-right" id = "containerRight">
             <h3 id=title>
 
             </h3>
@@ -67,69 +67,21 @@
             </div>
             <hr>
             <div class="comment" id=comment>
+            <ul id="ul"> </ul>
             </div>
-            <ul id="ul"></ul>
             <div class="containerComment">
                 <input type="text" class="commentInput" id="commentInput">
                 <div class="row">
                     <input type="submit" id="submit" value="提交" onclick="postComment()">
                 </div>
-
             </div>
         </div>
     </div>
+
     <script>
         $(function () {
             //标题中中不能出现 &
-            let result = addressResolution(location.href)
-            userId = result["userId"]
-            authorId = result["article"][0];
-            articleId = result["article"][2];
-            /*
-            authorId 
-            authorName
-            articleId
-            title 
-            date
-            content
-            comments;
-            */
-
-            var box0 = document.getElementById('title');
-            var box1 = document.getElementById('author');
-            var box2 = document.getElementById('date');
-            var box3 = document.getElementById('content');
-            var box4 = document.getElementById('comment');
-
-            box0.innerHTML = result["article"][3];
-            box1.innerHTML = result["article"][1];
-            box2.innerHTML = result["article"][4];
-            box3.innerHTML = result["article"][5];
-            // 严格符合json数据格式
-            comment = "[" + result["article"][6] + "]";
-            console.log(comment);
-            let jsonComment = JSON.parse(comment)
-            //1、获取元素
-            var txt = document.getElementById("content");
-            var btn = document.getElementById("submit");
-            var ul = document.getElementById("ul");
-            for (let i = 0; i < jsonComment.length; i++) {
-                //创建元素li作为留言区
-                var li = document.createElement("li");
-                //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
-                li.innerHTML = jsonComment[i]["userName"] + "<br>" + jsonComment[i]["comment"] + "<br>"
-                    + jsonComment[i]["date"];
-                    // + "<a href='javascript:;'>删除</a>"
-                //将留言添加到ul中，而且在最上方
-                ul.insertBefore(li, ul.children[-1]);
-            }
-
-            // for (var i = 0; i < as.length; i++) {
-            //     as[i].onclick = function () {
-            //         //删除当前a标签所在位置的父节点li
-            //         ul.removeChild(this.parentNode);
-            //     }
-            // }
+            analyseUrl(location.href);
         }
         )
     </script>
@@ -174,12 +126,119 @@
                     console.log(returnMesg);
                     if (returnMesg.flag === true) {
                         alert("评论成功");
-                        window.location.reload();
+                        document.getElementById('commentInput').value="";
+                        // 评论完之后，对评论列表进行刷新
+                        showComments();
+                        // 列表框拉到最低
+                        document.getElementById("comment").scrollTop = 
+                            document.getElementById("comment").scrollHeight
                     }
 
                 }
 
             }
+        }
+    </script>
+
+    <script>
+        function showComments() {
+            /* 
+            {
+                usereId：评论者的ID
+                articleId：评论文章的ID
+                comment：评论内容
+            }
+            */
+            let result = addressResolution(location.href);
+            let userId = result["userId"];  //用户的ID
+            let articleId = result["article"][2]; //文章的ID
+            let data = {}
+            data["userId"] = userId;
+            data["articleId"] = articleId;
+            const jsonString = JSON.stringify(data);
+            let xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:18081/article/showComments')
+            xhr.send(jsonString);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var returnMesg = JSON.parse(xhr.responseText);
+                    console.log(returnMesg);
+                    if (returnMesg.flag === true) {
+                        let userId = returnMesg.data["userId"];
+                        let authorId = returnMesg.data["authorId"];
+                        let authorName = returnMesg.data["authorName"];
+                        let articleId = returnMesg.data["articleId"];
+                        let title = returnMesg.data["articleTitle"];
+                        let date = returnMesg.data["date"];
+                        let content = returnMesg.data["content"];
+                        let comments = returnMesg.data["comments"];
+                        let s = authorId + "&" + authorName + "&" +
+                            articleId + "&" + title + "&" + date + "&" + content + "&" + comments;
+                        url = "blog_detail.html#" + "id=" + userId + "%" + 'txt=' + s;
+                        analyseUrl(url);
+                    }
+
+                }
+
+            }
+        }
+    </script>
+
+    <script>
+        function analyseUrl(url) {
+            //标题中中不能出现 &
+            let result = addressResolution(url)
+            userId = result["userId"]
+            authorId = result["article"][0];
+            articleId = result["article"][2];
+            /*
+            authorId 
+            authorName
+            articleId
+            title 
+            date
+            content
+            comments;
+            */
+
+            var box0 = document.getElementById('title');
+            var box1 = document.getElementById('author');
+            var box2 = document.getElementById('date');
+            var box3 = document.getElementById('content');
+            var box4 = document.getElementById('comment');
+
+            box0.innerHTML = result["article"][3];
+            box1.innerHTML = result["article"][1];
+            box2.innerHTML = result["article"][4];
+            box3.innerHTML = result["article"][5];
+            if(result["article"][6] == "null"){
+                return ;
+            }
+            // 严格符合json数据格式
+            comment = "[" + result["article"][6] + "]";
+            console.log(comment);
+            let jsonComment = JSON.parse(comment)
+            //1、获取元素
+            var txt = document.getElementById("content");
+            var btn = document.getElementById("submit");
+            var ul = document.getElementById("ul");
+            ul.innerHTML = "";
+            for (let i = 0; i < jsonComment.length; i++) {
+                //创建元素li作为留言区
+                var li = document.createElement("li");
+                //将文本框中的内容放到li中,a标签中href中的内容代表什么都不执行
+                li.innerHTML = jsonComment[i]["userName"] + "<br>" + jsonComment[i]["comment"] + "<br>"
+                    + jsonComment[i]["date"];
+                // + "<a href='javascript:;'>删除</a>"
+                //将留言添加到ul中，而且在最上方
+                ul.insertBefore(li, ul.children[-1]);
+            }
+            // for (var i = 0; i < as.length; i++) {
+            //     as[i].onclick = function () {
+            //         //删除当前a标签所在位置的父节点li
+            //         ul.removeChild(this.parentNode);
+            //     }
+            // }
         }
     </script>
 
