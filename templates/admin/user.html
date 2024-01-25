@@ -6,10 +6,10 @@
     <title></title>
     <meta name="Keywords" content="关键词,关键词">
     <meta name="description" content="">
-
+    <link rel="stylesheet" href="../../static/css/admin/user.css">
     <link rel="stylesheet" href="../../static/css/admin/management.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+    <script type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
     </script>
@@ -22,10 +22,26 @@
             <div class="l_logo"></div>
             <div class="l_nav">
                 <ul>
-                    <li class="active">
-                        <a href="">
+                    <li id = "homeBar">
+                        <a href="home.html">
                             <i class="icon_1"></i>
                             <span>首页</span>
+                        </a>
+                    </li>
+                    <li id = "userBar">
+                        <!-- 这种方法是很多网站最常用的方法，也是最周全的方法，
+                            onclick方法负责执行js函数，而void是一个操作符，void(0)返回undefined，
+                            地址不发生跳转。而且这种方法不会像第一种方法一样直接将js方法暴露在浏览器的状态栏。-->
+                        <a href="javascript:void(0);" onclick="user()">
+                            <i class="icon_1"></i>
+                            <span>用户列表</span>
+                        </a>
+                    </li>
+
+                    <li id = "articleBar">
+                        <a href="javascript:void(0);" onclick="article()">
+                            <i class="icon_2"></i>
+                            <span>文章列表</span>
                         </a>
                     </li>
                     
@@ -119,26 +135,16 @@
             <!--end r_location-->
 
             <!--r_message start-->
-            <div class="r_message">
-                <div class="m_list m_1">
-                    <div class="m_pic"></div>
-                    <div class="m_desc">
-                        <span id = "span1"></span>
-                        <p>用户数</p>
-                    </div>
-                </div>
-               
-                
-                
-                <div class="m_list m_2">
-                    <div class="m_pic"></div>
-                    <div class="m_desc">
-                        <span id = "span2"></span>
-                        <p>文章数</p>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
+            <table class="yustb2" id="users">
+                <tr>
+                    <th>ID</th>
+                    <th>UserName</th>
+                    <th>PassWord</th>
+                    <th>ArticleLibId</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                </tr>
+            </table>
             <!--end r_message-->
 
         </div>
@@ -146,31 +152,92 @@
 
     </div>
 
-<script>
-    $(function(){
-        number();
-    }
-    )
-</script>
-
-<script>
-    function number() {
-        let xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:18081//omnibus/showall')
-        xhr.send()
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var returnMesg = JSON.parse(xhr.responseText);
-                if (returnMesg.flag === true) {
-                    document.getElementById("span1").innerText = returnMesg.data["userNumber"];
-                    document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
+    <script>
+        $(function () {
+            // 
+            url = window.location.href;
+            // 正则表达式
+            var pattern = /(\w+).html/;
+            let barName = pattern.exec(url)[1];
+            console.log(document.getElementById(barName+"Bar").innerHTML);
+            document.getElementById(barName+"Bar").className ="active";
+            let xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:18081//admin/allUsers')
+            xhr.send()
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var returnMesg = JSON.parse(xhr.responseText);
+                    if (returnMesg.flag === true) {
+                        let num = returnMesg.data.length;
+                        console.log(num);
+                        console.log(document.getElementById("users").innerHTML);
+                        console.log(returnMesg);
+                        for (let i = 0; i < num; i++) {
+                            let status = "";
+                            let type = "";
+                            if (returnMesg.data[i]["status"] == true) {
+                                status = "正常";
+                            }
+                            else if (returnMesg.data[i]["status"] == false) {
+                                status = "冻结";
+                            }
+                            else {
+                                status = "ERROR";
+                            }
+                            if (returnMesg.data[i]["type"] == true) {
+                                type = "普通用户";
+                            }
+                            else if (returnMesg.data[i]["status"] == false) {
+                                status = "管理员";
+                            }
+                            else {
+                                status = "ERROR";
+                            }
+                            document.getElementById("users").innerHTML += "<tr>"
+                                + "<td>" + returnMesg.data[i]["id"] + "</td>"
+                                + "<td>" + returnMesg.data[i]["name"] + "</td>"
+                                + "<td>" + returnMesg.data[i]["passWord"] + "</td>"
+                                + "<td>" + returnMesg.data[i]["articleLibId"] + "</td>"
+                                + "<td>" + status + "</td>"
+                                + "<td>" + type + "</td>"
+                                + "</tr>";
+                        }
+                    }
                 }
             }
         }
-    }
-//document.getElementById("span1").innerText = number()["userNumber"];
-//document.getElementById("span2").innerText = number()["articleNumber"];
-</script>
+        )
+    </script>
 
+    <script>
+        function number() {
+            let xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:18081//omnibus/showall')
+            xhr.send()
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var returnMesg = JSON.parse(xhr.responseText);
+                    if (returnMesg.flag === true) {
+                        document.getElementById("span1").innerText = returnMesg.data["userNumber"];
+                        document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
+                    }
+                }
+            }
+        }
+        //document.getElementById("span1").innerText = number()["userNumber"];
+        //document.getElementById("span2").innerText = number()["articleNumber"];
+    </script>
+    <script>
+        function user() {
+            window.location.href = "user.html";
+        }
+    </script>
+
+    <script>
+        function article() {
+            window.location.href = "article.html";
+        }
+    </script>
 </body>
+
 </html>

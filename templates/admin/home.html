@@ -7,9 +7,9 @@
     <meta name="Keywords" content="关键词,关键词">
     <meta name="description" content="">
 
-    <link rel="stylesheet" href="../../static/css/admin/management.css">
+    <link rel="stylesheet" href="../../static/css/admin/home.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+    <script type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
     </script>
@@ -22,13 +22,14 @@
             <div class="l_logo"></div>
             <div class="l_nav">
                 <ul>
-                    <li class="active">
-                        <a >
+                    <li class="active" id = "homeBar">
+                        <a>
                             <i class="icon_1"></i>
                             <span>首页</span>
                         </a>
                     </li>
-                    <li>
+
+                    <li id = "userBar">
                         <!-- 这种方法是很多网站最常用的方法，也是最周全的方法，
                             onclick方法负责执行js函数，而void是一个操作符，void(0)返回undefined，
                             地址不发生跳转。而且这种方法不会像第一种方法一样直接将js方法暴露在浏览器的状态栏。-->
@@ -38,36 +39,13 @@
                         </a>
                     </li>
 
-                    <li>
+                    <li id = "articleBar">
                         <a href="javascript:void(0);" onclick="article()">
                             <i class="icon_2"></i>
                             <span>文章列表</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="course.html">
-                            <i class="icon_3"></i>
-                            <span>专业课列表</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="grade.html">
-                            <i class="icon_4"></i>
-                            <span>年级管理</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="class.html">
-                            <i class="icon_5"></i>
-                            <span>班级管理</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="work.html">
-                            <i class="icon_6"></i>
-                            <span>作业管理</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -135,7 +113,7 @@
             <div class="h_info">
                 <div class="h_user">当前用户：Arry , 身份：系统管理员</div>
                 <div class="h_out">
-                    <a href="#">
+                    <a href="javascript:void(0);" onclick="home()">
                         <span>退出</span>
                         <i></i>
                     </a>
@@ -162,17 +140,17 @@
                 <div class="m_list m_1">
                     <div class="m_pic"></div>
                     <div class="m_desc">
-                        <span id = "span1"></span>
+                        <span id="span1"></span>
                         <p>用户数</p>
                     </div>
                 </div>
-               
-                
-                
+
+
+
                 <div class="m_list m_2">
                     <div class="m_pic"></div>
                     <div class="m_desc">
-                        <span id = "span2"></span>
+                        <span id="span2"></span>
                         <p>文章数</p>
                     </div>
                 </div>
@@ -185,43 +163,46 @@
 
     </div>
 
-<script>
-    $(function(){
-        number();
-    }
-    )
-</script>
+    <script>
+        $(function () {
+            url = window.location.href;
+            // 正则表达式
+            var pattern = /(\w+).html/;
+            let bar = pattern.exec(url)[1];
+            number();
+        }
+        )
+    </script>
 
-<script>
-    function number() {
-        let xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:18081//omnibus/showall')
-        xhr.send()
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var returnMesg = JSON.parse(xhr.responseText);
-                if (returnMesg.flag === true) {
-                    document.getElementById("span1").innerText = returnMesg.data["userNumber"];
-                    document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
+    <script>
+        function number() {
+            let xhr = new XMLHttpRequest()
+            xhr.open('POST', 'http://localhost:18081//omnibus/showall')
+            xhr.send()
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var returnMesg = JSON.parse(xhr.responseText);
+                    if (returnMesg.flag === true) {
+                        document.getElementById("span1").innerText = returnMesg.data["userNumber"];
+                        document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
+                    }
                 }
             }
         }
-    }
-//document.getElementById("span1").innerText = number()["userNumber"];
-//document.getElementById("span2").innerText = number()["articleNumber"];
-</script>
+    </script>
 
-<script>
-    function user(){
-        window.location.href= "user.html";
-    }
-</script>
-
-<script>
-    function article(){
-        window.location.href= "article.html";
-    }
-</script>
+    <script>
+        function user() {
+            window.location.href = "user.html";
+        }
+        function article() {
+            window.location.href = "article.html";
+        }
+        function home(){
+            window.location.href = "home.html";
+        }
+    </script>
 
 </body>
+
 </html>
