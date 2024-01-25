@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <meta name="Keywords" content="关键词,关键词">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="../../static/css/admin/management.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script  type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js">
+    </script>
+</head>
+
+<body>
+    <div class="tz_content">
+        <!--t_left start-->
+        <div class="t_left">
+            <div class="l_logo"></div>
+            <div class="l_nav">
+                <ul>
+                    <li class="active">
+                        <a >
+                            <i class="icon_1"></i>
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- 这种方法是很多网站最常用的方法，也是最周全的方法，
+                            onclick方法负责执行js函数，而void是一个操作符，void(0)返回undefined，
+                            地址不发生跳转。而且这种方法不会像第一种方法一样直接将js方法暴露在浏览器的状态栏。-->
+                        <a href="javascript:void(0);" onclick="user()">
+                            <i class="icon_1"></i>
+                            <span>用户列表</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" onclick="article()">
+                            <i class="icon_2"></i>
+                            <span>文章列表</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="course.html">
+                            <i class="icon_3"></i>
+                            <span>专业课列表</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="grade.html">
+                            <i class="icon_4"></i>
+                            <span>年级管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="class.html">
+                            <i class="icon_5"></i>
+                            <span>班级管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="work.html">
+                            <i class="icon_6"></i>
+                            <span>作业管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--t_left end-->
+
+        <!--t_header start-->
+        <div class="t_header">
+            <!--h_nav start-->
+            <div class="h_nav">
+                <ul>
+                    <li>
+                        <a href="#" class="h_sel">
+                            <i class="h_icon1"></i>
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon2"></i>
+                            <span>界面管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon3"></i>
+                            <span>栏目管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon4"></i>
+                            <span>内容管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon5"></i>
+                            <span>用户管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon6"></i>
+                            <span>论坛中心</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="h_icon7"></i>
+                            <span>应用中心</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="h_icon8"></i>
+                            <span>工具</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--end h_nav-->
+
+            <!--h_info start-->
+            <div class="h_info">
+                <div class="h_user">当前用户：Arry , 身份：系统管理员</div>
+                <div class="h_out">
+                    <a href="#">
+                        <span>退出</span>
+                        <i></i>
+                    </a>
+                </div>
+            </div>
+            <!--end h_info-->
+
+        </div>
+        <!--end t_header-->
+
+
+        <!--t_right start-->
+        <div class="t_right">
+
+            <!--r_location start-->
+            <div class="r_location">
+                <i></i>
+                <p>您当前所在位置：首页 > 后台中心</p>
+            </div>
+            <!--end r_location-->
+
+            <!--r_message start-->
+            <div class="r_message">
+                <div class="m_list m_1">
+                    <div class="m_pic"></div>
+                    <div class="m_desc">
+                        <span id = "span1"></span>
+                        <p>用户数</p>
+                    </div>
+                </div>
+               
+                
+                
+                <div class="m_list m_2">
+                    <div class="m_pic"></div>
+                    <div class="m_desc">
+                        <span id = "span2"></span>
+                        <p>文章数</p>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--end r_message-->
+
+        </div>
+        <!--end t_right-->
+
+    </div>
+
+<script>
+    $(function(){
+        number();
+    }
+    )
+</script>
+
+<script>
+    function number() {
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://localhost:18081//omnibus/showall')
+        xhr.send()
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var returnMesg = JSON.parse(xhr.responseText);
+                if (returnMesg.flag === true) {
+                    document.getElementById("span1").innerText = returnMesg.data["userNumber"];
+                    document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
+                }
+            }
+        }
+    }
+//document.getElementById("span1").innerText = number()["userNumber"];
+//document.getElementById("span2").innerText = number()["articleNumber"];
+</script>
+
+<script>
+    function user(){
+        window.location.href= "user.html";
+    }
+</script>
+
+<script>
+    function article(){
+        window.location.href= "article.html";
+    }
+</script>
+
+</body>
+</html>
