@@ -6,8 +6,8 @@
     <title></title>
     <meta name="Keywords" content="关键词,关键词">
     <meta name="description" content="">
-    <link rel="stylesheet" href="../../static/css/admin/user.css">
-    <link rel="stylesheet" href="../../static/css/admin/management.css">
+    <link rel="stylesheet" href="../../static/css/admin/article.css">
+    <link rel="stylesheet" href="../../static/css/admin/home.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
     </script>
@@ -137,6 +137,7 @@
             <!--r_message start-->
             <table class="yustb2" id="articles">
                 <tr>
+                    <th>Number</th>
                     <th>ID</th>
                     <th>AuthorId</th>
                     <th>AuthorName</th>
@@ -144,6 +145,8 @@
                     <th>Date</th>
                     <th>Content</th>
                     <th>Comments</th>
+                    <th>Status</th>
+                    <th>Operate</th>
                 </tr>
             </table>
             <!--end r_message-->
@@ -159,8 +162,8 @@
             // 正则表达式
             var pattern = /(\w+).html/;
             let barName = pattern.exec(url)[1];
-            console.log(document.getElementById(barName+"Bar").innerHTML);
-            document.getElementById(barName+"Bar").className ="active";
+            console.log(document.getElementById(barName + "Bar").innerHTML);
+            document.getElementById(barName + "Bar").className = "active";
             // 
             let xhr = new XMLHttpRequest()
             xhr.open('POST', 'http://localhost:18081//admin/allArticles')
@@ -175,6 +178,7 @@
                         console.log(returnMesg);
                         for (let i = 0; i < num; i++) {
                             document.getElementById("articles").innerHTML += "<tr>"
+                                + "<td>" + (i + 1) + "</td>"
                                 + "<td>" + returnMesg.data[i]["id"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["authorId"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["authorName"] + "</td>"
@@ -182,8 +186,28 @@
                                 + "<td>" + returnMesg.data[i]["date"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["content"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["comments"] + "</td>"
-                                // + "<td>"+status+"</td>"
-                                // +"<td>"+type+"</td>"
+                                + "<td>"
+                                + "<select id = statusSelect" + ("%d", i) + ">"
+                                + '<option value="true">正常</option>'
+                                + '<option value="false">冻结</option>'
+                                + "</select>"
+                                + "</td>"
+
+                                + "<td>"
+                                + '<div>'
+                                + '<button' + ' class="editButton"' + ' id=edit' + ("%d", i) + ' onclick="edit()">'
+                                + '编辑'
+                                + '<i></i>'
+                                + '</button>'
+                                + '</div>'
+
+                                + '<div>'
+                                + '<button' + ' class="deleteButton"' + ' id=delete' + ("%d", i) + ' onclick="Delete()">'
+                                + '删除'
+                                + '<i></i>'
+                                + '</button>'
+                                + '</div>'
+                                + "</td>"
                                 + "</tr>";
                         }
                     }
@@ -216,11 +240,25 @@
         function user() {
             window.location.href = "user.html";
         }
-    </script>
 
-    <script>
         function article() {
             window.location.href = "article.html";
+        }
+
+        function edit() {
+            var pattern = /\d+/;
+            let num = pattern.exec(event.target.id);
+            if (document.getElementById("edit" + ("%d", num)).innerText == "保存") {
+                document.getElementById("statusSelect" + ("%d", num)).style.pointerEvents = "none";
+                document.getElementById("edit" + ("%d", num)).innerText = "编辑";
+
+            }
+            else if (document.getElementById("edit" + ("%d", num)).innerText == "编辑") {
+                console.log(num);
+                document.getElementById("statusSelect" + ("%d", num)).style.pointerEvents = "auto";
+                document.getElementById("edit" + ("%d", num)).innerText = "保存";
+            }
+
         }
     </script>
 </body>

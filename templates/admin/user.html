@@ -7,7 +7,7 @@
     <meta name="Keywords" content="关键词,关键词">
     <meta name="description" content="">
     <link rel="stylesheet" href="../../static/css/admin/user.css">
-    <link rel="stylesheet" href="../../static/css/admin/management.css">
+    <link rel="stylesheet" href="../../static/css/admin/home.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js">
     </script>
@@ -22,13 +22,13 @@
             <div class="l_logo"></div>
             <div class="l_nav">
                 <ul>
-                    <li id = "homeBar">
+                    <li id="homeBar">
                         <a href="home.html">
                             <i class="icon_1"></i>
                             <span>首页</span>
                         </a>
                     </li>
-                    <li id = "userBar">
+                    <li id="userBar">
                         <!-- 这种方法是很多网站最常用的方法，也是最周全的方法，
                             onclick方法负责执行js函数，而void是一个操作符，void(0)返回undefined，
                             地址不发生跳转。而且这种方法不会像第一种方法一样直接将js方法暴露在浏览器的状态栏。-->
@@ -38,13 +38,13 @@
                         </a>
                     </li>
 
-                    <li id = "articleBar">
+                    <li id="articleBar">
                         <a href="javascript:void(0);" onclick="article()">
                             <i class="icon_2"></i>
                             <span>文章列表</span>
                         </a>
                     </li>
-                    
+
                 </ul>
             </div>
         </div>
@@ -137,12 +137,14 @@
             <!--r_message start-->
             <table class="yustb2" id="users">
                 <tr>
+                    <th>Number</th>
                     <th>ID</th>
                     <th>UserName</th>
                     <th>PassWord</th>
                     <th>ArticleLibId</th>
                     <th>Status</th>
                     <th>Type</th>
+                    <th>Operate</th>
                 </tr>
             </table>
             <!--end r_message-->
@@ -159,8 +161,8 @@
             // 正则表达式
             var pattern = /(\w+).html/;
             let barName = pattern.exec(url)[1];
-            console.log(document.getElementById(barName+"Bar").innerHTML);
-            document.getElementById(barName+"Bar").className ="active";
+            console.log(document.getElementById(barName + "Bar").innerHTML);
+            document.getElementById(barName + "Bar").className = "active";
             let xhr = new XMLHttpRequest()
             xhr.open('POST', 'http://localhost:18081//admin/allUsers')
             xhr.send()
@@ -169,8 +171,6 @@
                     var returnMesg = JSON.parse(xhr.responseText);
                     if (returnMesg.flag === true) {
                         let num = returnMesg.data.length;
-                        console.log(num);
-                        console.log(document.getElementById("users").innerHTML);
                         console.log(returnMesg);
                         for (let i = 0; i < num; i++) {
                             let status = "";
@@ -193,14 +193,44 @@
                             else {
                                 status = "ERROR";
                             }
-                            document.getElementById("users").innerHTML += "<tr>"
+                            document.getElementById("users").innerHTML +=
+                                "<tr>"
+                                + "<td>" + ("%d", i+1) + "</td>"
                                 + "<td>" + returnMesg.data[i]["id"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["name"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["passWord"] + "</td>"
                                 + "<td>" + returnMesg.data[i]["articleLibId"] + "</td>"
-                                + "<td>" + status + "</td>"
-                                + "<td>" + type + "</td>"
-                                + "</tr>";
+                                + "<td>"
+                                + "<select id = statusSelect" + ("%d>", i) + ">"
+                                + '<option value="true">正常</option>'
+                                + '<option value="false">冻结</option>'
+                                + "</select>"
+                                + "</td>"
+
+                                + "<td>"
+                                + "<select id = typeSelect" + ("%d", i) + ">"
+                                + '<option value="true">普通用户</option>'
+                                + '<option value="false">管理员</option>'
+                                + "</select>"
+                                + "</td>"
+
+                                + "<td>"
+                                + '<div>'
+                                + '<button' + ' class="editButton"' + ' id=edit' + ("%d", i) + ' onclick="edit()">'
+                                + '编辑'
+                                + '<i></i>'
+                                + '</button>'
+                                + '</div>'
+
+                                + '<div>'
+                                + '<button' + ' class="deleteButton"' + ' id=delete' + ("%d", i) + ' onclick="Delete()">'
+                                + '删除'
+                                + '<i></i>'
+                                + '</button>'
+                                + '</div>'
+                                + "</td>"
+
+                                + "</tr>"
                         }
                     }
                 }
@@ -209,34 +239,35 @@
         )
     </script>
 
-    <script>
-        function number() {
-            let xhr = new XMLHttpRequest()
-            xhr.open('POST', 'http://localhost:18081//omnibus/showall')
-            xhr.send()
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var returnMesg = JSON.parse(xhr.responseText);
-                    if (returnMesg.flag === true) {
-                        document.getElementById("span1").innerText = returnMesg.data["userNumber"];
-                        document.getElementById("span2").innerText = returnMesg.data["articleNumber"];
-                    }
-                }
-            }
-        }
-        //document.getElementById("span1").innerText = number()["userNumber"];
-        //document.getElementById("span2").innerText = number()["articleNumber"];
-    </script>
+
     <script>
         function user() {
             window.location.href = "user.html";
         }
-    </script>
-
-    <script>
         function article() {
             window.location.href = "article.html";
         }
+        function edit() {
+            var pattern = /\d+/;
+            let num = pattern.exec(event.target.id);
+            if(document.getElementById("edit"+("%d",num)).innerText=="保存"){
+                document.getElementById("statusSelect"+("%d",num)).style.pointerEvents="none";
+                document.getElementById("typeSelect"+("%d",num)).style.pointerEvents="none";
+                document.getElementById("edit"+("%d",num)).innerText="编辑";
+                
+            }
+            else if(document.getElementById("edit"+("%d",num)).innerText=="编辑"){
+                console.log(num);
+                document.getElementById("statusSelect"+("%d",num)).style.pointerEvents="auto";
+                document.getElementById("typeSelect"+("%d",num)).style.pointerEvents="auto";
+                document.getElementById("edit"+("%d",num)).innerText="保存";
+            }
+
+        }
+        function Delete() {
+            console.log(event.target.id);
+        }
+
     </script>
 </body>
 
